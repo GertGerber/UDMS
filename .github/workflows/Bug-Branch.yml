@@ -1,0 +1,34 @@
+name: Bug Branch Creation
+
+on:
+  issues:
+    types: [ labeled ]
+
+jobs:
+  create-backup-branch:
+    if: contains(github.event.issue.labels.*.name, 'bug')
+    runs-on: self-hosted
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create a new branch based on the Dev branch
+        run: |
+          git checkout Dev
+          git checkout -b "${{ github.event.issue.title }}"
+          git push --set-upstream origin "${{ github.event.issue.title }}"
+
+  update-issue:
+    if: contains(github.event.issue.labels.*.name, 'bug')
+    runs-on: self-hosted
+    permissions:
+      issues: write
+    steps:
+      - name: Update the GitHub issue
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            Automated Bug Branch: https://github.com/GertGerber/UDMS/tree/${{ github.event.issue.title }}
