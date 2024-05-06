@@ -137,6 +137,7 @@ else
 fi
 sleep 2
 # Remove the downloaded archive
+echo "Cleanup downloads"
 if [ -f "$latest_release.tar.gz" ]; then
     rm "$latest_release.tar.gz"
 fi

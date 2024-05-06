@@ -1,11 +1,11 @@
 #!/bin/bash
 #-----------------------------------------------------------------------------------#
 #
-#   MADE AND MAINTAINED BY RUNESREPOHUB
-#   https://github.com/RunesRepoHub
+#   MADE AND MAINTAINED BY GertGerber
+#   https://github.com/GertGerber
 #
-#   MADE BY @rune004   
-#   https://github.com/rune004  https://rp-helpdesk.com
+#   MADE BY @GertGerber   
+#   https://github.com/GertGerber  https://rp-helpdesk.com
 #
 #-----------------------------------------------------------------------------------#
 # Detect the distribution name from /etc/os-release
@@ -51,7 +51,7 @@ execute() {
 execute apt-get install dialog -y > /dev/null 2>&1
 
 # Create or overwrite the .dialogrc configuration file in the user's home directory
-execute cp ~/RRHQD/Script/RRHQD-Install/dialog.txt "${HOME}/.dialogrc"
+execute cp ~/UDMS/Script/UDMS-Install/dialog.txt "${HOME}/.dialogrc"
 
 
 # Detect the distribution name from /etc/os-release
@@ -67,23 +67,23 @@ if [ "$OS_DISTRO" != "Kali GNU/Linux" ]; then
             echo "Please enter a new alias name:"
             read -p "New alias name: " new_alias
             # Add the new alias to .bashrc
-            echo "alias $new_alias=\"bash ~/RRHQD/Script/Menu/Main.sh\"" >> ~/.bashrc
+            echo "alias $new_alias=\"bash ~/UDMS/Script/Menu/Main.sh\"" >> ~/.bashrc
         fi
     else
         # Add the alias 'qd' to .bashrc
-        echo "alias qd=\"bash ~/RRHQD/Script/Menu/Main.sh\"" >> ~/.bashrc
+        echo "alias qd=\"bash ~/UDMS/Script/Menu/Main.sh\"" >> ~/.bashrc
     fi
     # Check if the alias 'qd-update' already exists in .bashrc
     if grep -q "qd-update" ~/.bashrc; then
         :
     else
-        echo "alias qd-update=\"bash ~/RRHQD/Script/RRHQD-Install/Download.sh\"" >> ~/.bashrc
+        echo "alias qd-update=\"bash ~/UDMS/Script/UDMS-Install/Download.sh\"" >> ~/.bashrc
     fi
     # Check if the alias 'qd-update' already exists in .bashrc
     if grep -q "qd-update-dev" ~/.bashrc; then
         :
     else
-        echo "alias qd-update-dev=\"bash ~/RRHQD/Script/RRHQD-Install/Pre-Release-Download.sh\"" >> ~/.bashrc
+        echo "alias qd-update-dev=\"bash ~/UDMS/Script/UDMS-Install/Pre-Release-Download.sh\"" >> ~/.bashrc
     fi
 fi
 
@@ -100,7 +100,7 @@ if [ "$OS_DISTRO" = "Kali GNU/Linux" ]; then
             echo "Please enter a new alias name:"
             read -p "New alias name: " new_alias
             # Add the new alias to .zshrc
-            echo "alias $new_alias=\"bash ~/RRHQD/Script/Menu/Main.sh\"" >> ~/.zshrc
+            echo "alias $new_alias=\"bash ~/UDMS/Script/Menu/Main.sh\"" >> ~/.zshrc
         fi
     else
         # Ensure .zshrc exists and has the correct permissions
@@ -109,19 +109,19 @@ if [ "$OS_DISTRO" = "Kali GNU/Linux" ]; then
             chmod 644 ~/.zshrc
         fi
         echo "Adding alias 'qd' to .zshrc"
-        echo "alias qd='bash ~/RRHQD/Script/Menu/Main.sh'" >> ~/.zshrc
+        echo "alias qd='bash ~/UDMS/Script/Menu/Main.sh'" >> ~/.zshrc
     fi
     # Check if the alias 'qd-update' already exists in .zshrc
     if grep -q "qd-update" ~/.zshrc; then
         :
     else
-        echo "alias qd-update=\"bash ~/RRHQD/Script/RRHQD-Install/Download.sh\"" >> ~/.zshrc
+        echo "alias qd-update=\"bash ~/UDMS/Script/UDMS-Install/Download.sh\"" >> ~/.zshrc
     fi
     # Check if the alias 'qd-update' already exists in .zshrc
     if grep -q "qd-update-dev" ~/.zshrc; then
         :
     else
-        echo "alias qd-update-dev=\"bash ~/RRHQD/Script/RRHQD-Install/Pre-Release-Download.sh\"" >> ~/.zshrc
+        echo "alias qd-update-dev=\"bash ~/UDMS/Script/UDMS-Install/Pre-Release-Download.sh\"" >> ~/.zshrc
     fi
 fi
 
@@ -149,6 +149,6 @@ fi
 
 sleep 3
 
-bash ~/RRHQD/Script/Menu/Main.sh
+bash ~/UDMS/Script/Menu/Main.sh
 
 
