@@ -8,6 +8,12 @@
 #   https://github.com/GertGerber  https://rp-helpdesk.com
 #
 #-----------------------------------------------------------------------------------#
+#!/bin/bash
+
+#-----------------------------------------------------------------------------------#
+# SECTION 1: Distribution Detection and Docker Installation
+#-----------------------------------------------------------------------------------#
+
 # Detect the distribution name from /etc/os-release
 OS_DISTRO=$(grep '^NAME=' /etc/os-release | cut -d '=' -f 2 | tr -d '"')
 
@@ -38,6 +44,10 @@ if [ "$OS_DISTRO" != "Kali GNU/Linux" ]; then
     fi
 fi
 
+#-----------------------------------------------------------------------------------#
+# SECTION 2: Dialog Package Installation and Configuration
+#-----------------------------------------------------------------------------------#
+
 # Function to safely execute commands with sudo if not running as root
 execute() {
     if [ "$(id -u)" -ne 0 ]; then
@@ -53,9 +63,9 @@ execute apt-get install dialog -y > /dev/null 2>&1
 # Create or overwrite the .dialogrc configuration file in the user's home directory
 execute cp ~/UDMS/Script/UDMS-Install/dialog.txt "${HOME}/.dialogrc"
 
-
-# Detect the distribution name from /etc/os-release
-OS_DISTRO=$(grep '^NAME=' /etc/os-release | cut -d '=' -f 2 | tr -d '"')
+#-----------------------------------------------------------------------------------#
+# SECTION 3: Setting Up Aliases
+#-----------------------------------------------------------------------------------#
 
 # Only run the block if the OS_DISTRO is not Kali GNU/Linux
 if [ "$OS_DISTRO" != "Kali GNU/Linux" ]; then
@@ -86,8 +96,6 @@ if [ "$OS_DISTRO" != "Kali GNU/Linux" ]; then
         echo "alias qd-update-dev=\"bash ~/UDMS/Script/UDMS-Install/Pre-Release-Download.sh\"" >> ~/.bashrc
     fi
 fi
-
-
 
 # Only run the block if the OS_DISTRO is Kali GNU/Linux
 if [ "$OS_DISTRO" = "Kali GNU/Linux" ]; then
@@ -125,6 +133,9 @@ if [ "$OS_DISTRO" = "Kali GNU/Linux" ]; then
     fi
 fi
 
+#-----------------------------------------------------------------------------------#
+# SECTION 4: Source Shell Configurations
+#-----------------------------------------------------------------------------------#
 
 if [ "$OS_DISTRO" != "Kali GNU/Linux" ]; then
     # Source the .bashrc to make the new alias available
@@ -133,7 +144,6 @@ if [ "$OS_DISTRO" != "Kali GNU/Linux" ]; then
     fi
 fi
 
-
 if [ "$OS_DISTRO" = "Kali GNU/Linux" ]; then
     # Source the .zshrc to make the new alias available
     if [ -f ~/.zshrc ]; then
@@ -141,14 +151,20 @@ if [ "$OS_DISTRO" = "Kali GNU/Linux" ]; then
     fi
 fi
 
+#-----------------------------------------------------------------------------------#
+# SECTION 5: Cleanup
+#-----------------------------------------------------------------------------------#
+
 if [ "$OS_DISTRO" != "Kali GNU/Linux" ]; then
     if [ -f ~/get-docker.sh ]; then
         rm ~/get-docker.sh
     fi
 fi
 
+#-----------------------------------------------------------------------------------#
+# SECTION 6: Final Execution
+#-----------------------------------------------------------------------------------#
+
 sleep 3
 
 bash ~/UDMS/Script/Menu/Main.sh
-
-

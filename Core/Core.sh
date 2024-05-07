@@ -6,11 +6,10 @@
 # 4. 
 #-----------------------------------------------------------------------------------#
 
-##########################################################################
-#####  Set variables for UDMS  # Core.sh # Made for @GertGerber #####
-########################## Made for @rune004 #############################
-##########################################################################
-##### Styles ######
+#-----------------------------------------------------------------------------------#
+# SECTION 1: Styles
+#-----------------------------------------------------------------------------------#
+
 Black='\e[0;30m'
 DarkGray='\e[1;30m'
 Red='\e[0;31m'
@@ -28,8 +27,13 @@ LightCyan='\e[1;36m'
 LightGray='\e[0;37m'
 White='\e[1;37m'
 NC='\e[0m'  # Reset to default
-############################################################################
 
+#-----------------------------------------------------------------------------------#
+# SECTION 2: Variables
+#-----------------------------------------------------------------------------------#
+
+# Set variables for UDMS project
+locally_stored_release=""
 if [ -f ~/UDMS/.latest_release.txt ]; then
     locally_stored_release=$(cat ~/UDMS/.latest_release.txt)
 fi
@@ -37,11 +41,11 @@ fi
 PROJECT_NAME="UDMS $locally_stored_release (GertGerber Quick Deploy) - Running On $(hostname) IP ($(hostname -I | cut -d' ' -f1))"
 
 
-# UDMS-Install
-DOWNLOAD_UDMS=~/UDMS/Script/UDMS-Install/Download.sh
-DOWNLOAD_UDMS_DEV=~/UDMS/Script/UDMS-Install/Pre-Release-Download.sh
 
-## Folders
+#-----------------------------------------------------------------------------------#
+# SECTION 3: Folders
+#-----------------------------------------------------------------------------------#
+
 
 ROOT_FOLDER=~/UDMS
 ROOT_FOLDER_CRONJOB=/root/UDMS
@@ -77,7 +81,13 @@ HOST_INFO_SYSTEM_FOLDER=Host-Info-System
 DEVOPS_FOLDER=DevOps
 
 
-## Installers Scripts
+#-----------------------------------------------------------------------------------#
+# SECTION 4: Installer Scripts
+#-----------------------------------------------------------------------------------#
+
+# UDMS-Install
+DOWNLOAD_UDMS=~/UDMS/Script/UDMS-Install/Download.sh
+DOWNLOAD_UDMS_DEV=~/UDMS/Script/UDMS-Install/Pre-Release-Download.sh
 
 CLOUDFLARE_TUNNEL="Cloudflare-Tunnel.sh"
 MEDIACMS="MediaCMS.sh"

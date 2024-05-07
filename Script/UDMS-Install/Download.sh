@@ -1,20 +1,19 @@
 #!/bin/bash
 
-#   /UDMS/Scripts/UDMS-install/Downloads.sh
+
 #-----------------------------------------------------------------------------------#
-#
-#   MADE AND MAINTAINED BY GertGerber
-#   https://github.com/GertGerber
-#
-#   MADE BY @GertGerber   
-#   https://github.com/GertGerber  https://rp-helpdesk.com
-#
+
+# Title: /UDMS/Scripts/UDMS-install/Downloads.sh
+# Author: GertGerber
+# Repository: https://github.com/GertGerber
+# Description: This script automates the installation process of UDMS (Unified Device Management System).
 #-----------------------------------------------------------------------------------#
-##########################################################################
-#####  Set variables for UDMS  # Core.sh # Made for @GertGerber #####
-########################## Made for @GertGerber #############################
-##########################################################################
-##### Styles ######
+
+#-----------------------------------------------------------------------------------#
+# SECTION 1:  Set Variables
+#-----------------------------------------------------------------------------------#
+
+# Styles
 Black='\e[0;30m'
 DarkGray='\e[1;30m'
 Red='\e[0;31m'
@@ -32,8 +31,6 @@ LightCyan='\e[1;36m'
 LightGray='\e[0;37m'
 White='\e[1;37m'
 NC='\e[0m'  # Reset to default
-############################################################################
-
 
 ## Folders to clean up after installation
 GITHUB_FOLDER=.github
@@ -45,6 +42,10 @@ MKDOCS_FILE=mkdocs.yml
 SECURITY_FILE=SECURITY.md
 CODE_OF_CONDUCT_FILE=CODE_OF_CONDUCT.md
 CONTRIBUTING_FILE=CONTRIBUTING.md
+
+#-----------------------------------------------------------------------------------#
+# SECTION 2:  Update Dependencies
+#-----------------------------------------------------------------------------------#
 
 echo -e "${Green}Downloading the latest updates for the dependencies...${NC}"
 
@@ -58,6 +59,10 @@ if [ "$EUID" -ne 0 ]; then
 fi
 
 echo -e "${Green}Dependencies have been successfully updated.${NC}"
+
+#-----------------------------------------------------------------------------------#
+# SECTION 2:  Check Existing Installation
+#-----------------------------------------------------------------------------------#
 
 # Check if the UDMS folder already exists
 if [ -d ~/UDMS ]; then
@@ -80,6 +85,11 @@ if [ -d ~/UDMS ]; then
     fi
 fi
 
+#-----------------------------------------------------------------------------------#
+# SECTION 3:  Install Dependencies
+#-----------------------------------------------------------------------------------#
+
+# Check and install sudo if not installed
 if ! dpkg -s sudo &> /dev/null; then
     echo -e "${Red}sudo is not installed.${NC} ${Yellow}Installing sudo...${NC}"
     if [ "$EUID" -ne 0 ]; then
@@ -90,6 +100,7 @@ if ! dpkg -s sudo &> /dev/null; then
     echo -e "${Green}sudo has been successfully installed.${NC}"
 fi
 
+# Check and install curl if not installed
 if ! dpkg -s curl &> /dev/null; then
     echo -e "${Red}curl is not installed.${NC} ${Yellow}Installing curl...${NC}"
     if [ "$EUID" -ne 0 ]; then
@@ -100,6 +111,9 @@ if ! dpkg -s curl &> /dev/null; then
     echo -e "${Green}curl has been successfully installed.${NC}"
 fi
 
+#-----------------------------------------------------------------------------------#
+# SECTION 4:  Download and Extract Latest Release
+#-----------------------------------------------------------------------------------#
 
 # GitHub repository URL
 REPO_URL="https://github.com/GertGerber/UDMS/releases/latest"
@@ -111,13 +125,13 @@ latest_release=$(curl -sSLI -o /dev/null -w %{url_effective} "$REPO_URL" | awk -
 # Download the latest release
 wget -c -q "https://github.com/GertGerber/UDMS/archive/refs/tags/$latest_release.tar.gz"
 
-
-sleep 5 
+sleep 2 
 
 # Extract the archive
 tar -xzf "$latest_release.tar.gz"
 
 sleep 2
+
 # Remove 'v' from the beginning of the release version
 latest_release="${latest_release#v}"
 
@@ -125,7 +139,10 @@ latest_release="${latest_release#v}"
 mv "UDMS-$latest_release" ~/UDMS
 latest_release="v$latest_release"
 
-# Clean up
+#-----------------------------------------------------------------------------------#
+# SECTION 5:  Clean Up
+#-----------------------------------------------------------------------------------#
+
 echo -e "${Green}Cleaning up...${NC}"
 echo -e "${Green}Moving the logs folder to ~/UDMS/logs/old_UDMS_logs ...${NC}"
 if [ -d ~/old_UDMS_logs ]; then 
@@ -136,38 +153,31 @@ else
     echo -e "${Yellow}~/old_UDMS_logs does not exist, skipping...${NC}"
 fi
 sleep 2
-# Remove the downloaded archive
+
+# Remove the downloaded archive and unnecessary files
 if [ -f "$latest_release.tar.gz" ]; then
     rm "$latest_release.tar.gz"
 fi
-if [ -d ~/UDMS/$GITHUB_FOLDER ]; then
-    rm -r ~/UDMS/$GITHUB_FOLDER
-fi
-if [ -d ~/UDMS/$DOCS_FOLDER ]; then
-    rm -r ~/UDMS/$DOCS_FOLDER
-fi
-if [ -f ~/UDMS/$README_FILE ]; then
-    rm ~/UDMS/$README_FILE
-fi
-if [ -f ~/UDMS/$MKDOCS_FILE ]; then
-    rm ~/UDMS/$MKDOCS_FILE
-fi
-if [ -f ~/UDMS/$SECURITY_FILE ]; then
-    rm ~/UDMS/$SECURITY_FILE
-fi
-if [ -f ~/UDMS/$CODE_OF_CONDUCT_FILE ]; then
-    rm ~/UDMS/$CODE_OF_CONDUCT_FILE
-fi
-if [ -f ~/UDMS/$CONTRIBUTING_FILE ]; then
-    rm ~/UDMS/$CONTRIBUTING_FILE
-fi
+
+rm -rf ~/UDMS/.github
+rm -rf ~/UDMS/docs
+rm -f ~/UDMS/README.md
+rm -f ~/UDMS/mkdocs.yml
+rm -f ~/UDMS/SECURITY.md
+rm -f ~/UDMS/CODE_OF_CONDUCT.md
+rm -f ~/UDMS/CONTRIBUTING.md
+
 if [ -d ~/old_UDMS_logs ]; then
-    rm -r ~/old_UDMS_logs
+    rm -rf ~/old_UDMS_logs
 fi
 sleep 2
 
 # Update the locally stored release version
 echo "$latest_release" > ~/UDMS/.latest_release.txt
+
+#-----------------------------------------------------------------------------------#
+# SECTION 6:  Display Information
+#-----------------------------------------------------------------------------------#
 
 echo -e "${Yellow}Unpacked${NC} ${Green}and${NC} ${Yellow}renamed${NC} ${Green}to${NC} ${Yellow}UDMS${NC}"
 echo 
@@ -177,5 +187,9 @@ echo -e "${LightRed}We read every piece of feedback, and take your input very se
 echo -e "${Green}Full Changelog:${NC} ${BrownOrange}https://github.com/GertGerber/UDMS/commits/${NC}${Yellow}$latest_release${NC}"
 echo -e "${Green}Release Notes:${NC} ${BrownOrange}https://github.com/GertGerber/UDMS/releases/tag/${NC}${Yellow}$latest_release${NC}"
 echo
+
+#-----------------------------------------------------------------------------------#
+# SECTION 7:  Run Setup Script
+#-----------------------------------------------------------------------------------#
 
 bash ~/UDMS/Script/UDMS-Install/Setup.sh
